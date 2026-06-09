@@ -1,5 +1,6 @@
 source = 'src'
 destination = 'site/colorbox'
+title = "Sigal demo gallery"
 
 theme = 'colorbox'
 img_size = (800, 600)

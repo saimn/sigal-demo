@@ -1,5 +1,6 @@
 source = 'src'
 destination = 'site/galleria'
+title = "Sigal demo gallery"
 
 theme = 'galleria'
 img_size = (800, 600)

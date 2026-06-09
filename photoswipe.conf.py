@@ -1,5 +1,6 @@
 source = 'src'
 destination = 'site/photoswipe'
+title = "Sigal demo gallery"
 
 theme = 'photoswipe'
 img_size = (800, 600)
