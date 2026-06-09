@@ -1,0 +1,53 @@
+on:
+  pull_request:
+  push:
+    # branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.14'
+          cache: 'pip'
+          cache-dependency-path: pyproject.toml
+      - name: Install sigal
+        run: python -m pip install sigal[all]
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Build
+        run: |
+          sigal build -v -c galleria.conf.py
+          sigal build -v -c colorbox.conf.py
+          sigal build -v -c photoswipe.conf.py
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
